@@ -19,3 +19,16 @@ router.all('/user/:username', function(req, res,next) {
 router.get('/user/:username', function(req, res) { 
 	res.send('user333: ' + req.params.username);
 });
+
+
+router.get('/userlist', function(db) {
+    return function(req, res) {
+        var collection = db.get('usercollection');
+        collection.find({},function(e,docs){
+            res.render('userlist', {
+                "userlist" : docs
+            });
+        });
+    };
+});
+
