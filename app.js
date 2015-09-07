@@ -8,10 +8,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-//mongo
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/nodetest1');
 
 var app = express();
 
@@ -29,6 +25,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+//mongo
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/nodetest1');
+
+var userlist = function(db) {
+    return function(req, res) {
+        var collection = db.get('usercollection');
+        collection.find({},{},function(e,docs){
+            res.render('userlist', {
+                "userlist" : docs
+            });//使用页面引擎渲染
+        });
+    };
+};
+
+app.get('/ws',userlist(db));
 
 
 // catch 404 and forward to error handler
