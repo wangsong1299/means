@@ -34,6 +34,7 @@ var db = monk('localhost:27017/nodetest1');
 var userlist = function(db) {
     return function(req, res) {
         var collection = db.get('usercollection');
+        //collection.insert({"username":"orange juice","email":"just so so"})
         collection.find({},{},function(e,docs){
             res.render('userlist', {
                 "userlist" : docs
