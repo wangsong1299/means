@@ -26,6 +26,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
+//跨域
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
+
 //mongo
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -44,6 +54,12 @@ var userlist = function(db) {
 };
 
 app.get('/ws',userlist(db));
+
+app.post('/submit', function(req, res) {
+  res.send('The time is ' + new Date().toString());
+
+});
+
 
 
 // catch 404 and forward to error handler
